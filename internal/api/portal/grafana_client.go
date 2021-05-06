@@ -1,6 +1,7 @@
 package portal
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
@@ -11,8 +12,8 @@ import (
 // The Grafana Cloud API is disconnected from the Grafana API on the stacks unfortunately. That's why we can't use
 // the Grafana Cloud API key to fully manage API keys on the Grafana API. The only thing we can do is to create
 // a temporary Admin key, and create a Grafana API client with that.
-func (c *Client) GetAuthedGrafanaClient(orgName, stackName string) (*grafana.Client, func() error, error) {
-	stack, err := c.GetStack(orgName, stackName)
+func (c *Client) GetAuthedGrafanaClient(ctx context.Context, orgName, stackName string) (*grafana.Client, func() error, error) {
+	stack, err := c.GetStack(ctx, orgName, stackName)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -29,7 +30,7 @@ func (c *Client) GetAuthedGrafanaClient(orgName, stackName string) (*grafana.Cli
 		Stack:         stackName,
 	}
 
-	apiKey, err := c.CreateGrafanaAPIKey(req)
+	apiKey, err := c.CreateGrafanaAPIKey(ctx, req)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,7 +43,7 @@ func (c *Client) GetAuthedGrafanaClient(orgName, stackName string) (*grafana.Cli
 	}
 
 	cleanup := func() error {
-		err = client.DeleteAPIKey(apiKey.ID)
+		err = client.DeleteAPIKey(ctx, apiKey.ID)
 		if err != nil {
 			log.Printf("[ERROR] failed deleting temporary admin API key `%s` on Grafana stack `%s`", apiKey.Name, stack.Slug)
 			return err

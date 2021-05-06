@@ -24,7 +24,7 @@ func dataSourceStackRead(ctx context.Context, d *schema.ResourceData, m interfac
 	p := m.(*Provider)
 	slug := d.Get("slug").(string)
 
-	stackList, err := listStacks(p)
+	stackList, err := listStacks(ctx, p)
 	if err != nil {
 		return diag.FromErr(err)
 	}

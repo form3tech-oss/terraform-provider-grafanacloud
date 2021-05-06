@@ -53,7 +53,7 @@ func resourceStackCreate(ctx context.Context, d *schema.ResourceData, m interfac
 		URL:  d.Get("url").(string),
 	}
 
-	resp, err := p.Client.CreateStack(req)
+	resp, err := p.Client.CreateStack(ctx, req)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -68,7 +68,7 @@ func resourceStackRead(ctx context.Context, d *schema.ResourceData, m interface{
 	p := m.(*Provider)
 
 	slug := d.Get("slug").(string)
-	resp, err := p.Client.GetStack(p.Organisation, slug)
+	resp, err := p.Client.GetStack(ctx, p.Organisation, slug)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -93,7 +93,7 @@ func resourceStackDelete(ctx context.Context, d *schema.ResourceData, m interfac
 	p := m.(*Provider)
 
 	slug := d.Get("slug").(string)
-	err := p.Client.DeleteStack(slug)
+	err := p.Client.DeleteStack(ctx, slug)
 	if err != nil {
 		return diag.FromErr(err)
 	}

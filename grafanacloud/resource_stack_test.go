@@ -1,6 +1,7 @@
 package grafanacloud_test
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"testing"
@@ -56,6 +57,8 @@ func TestAccStack_URL(t *testing.T) {
 
 func testAccCheckStackExists(resourceName string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
+		ctx := context.Background()
+
 		rs, ok := s.RootModule().Resources[resourceName]
 		if !ok {
 			return fmt.Errorf("resource `%s` not found", resourceName)
@@ -66,7 +69,7 @@ func testAccCheckStackExists(resourceName string) resource.TestCheckFunc {
 		}
 
 		p := getProvider(testAccProvider)
-		stack, err := p.Client.GetStack(p.Organisation, rs.Primary.Attributes["slug"])
+		stack, err := p.Client.GetStack(ctx, p.Organisation, rs.Primary.Attributes["slug"])
 		if err != nil {
 			return err
 		}
@@ -80,6 +83,7 @@ func testAccCheckStackExists(resourceName string) resource.TestCheckFunc {
 }
 
 func testAccCheckStackDestroy(s *terraform.State) error {
+	ctx := context.Background()
 	p := getProvider(testAccProvider)
 
 	for name, rs := range s.RootModule().Resources {
@@ -87,7 +91,7 @@ func testAccCheckStackDestroy(s *terraform.State) error {
 			continue
 		}
 
-		stack, err := p.Client.GetStack(p.Organisation, rs.Primary.Attributes["slug"])
+		stack, err := p.Client.GetStack(ctx, p.Organisation, rs.Primary.Attributes["slug"])
 		if err != nil {
 			return err
 		}

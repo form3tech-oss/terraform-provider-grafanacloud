@@ -1,6 +1,7 @@
 package grafanacloud_test
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -138,6 +139,8 @@ func TestAccGrafanaApiKey_Expired(t *testing.T) {
 
 func testAccCheckGrafanaAPIKeyExists(resourceName string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
+		ctx := context.Background()
+
 		rs, ok := s.RootModule().Resources[resourceName]
 		if !ok {
 			return fmt.Errorf("resource `%s` not found", resourceName)
@@ -148,7 +151,7 @@ func testAccCheckGrafanaAPIKeyExists(resourceName string) resource.TestCheckFunc
 		}
 
 		p := getProvider(testAccProvider)
-		gc, cleanup, err := p.Client.GetAuthedGrafanaClient(p.Organisation, rs.Primary.Attributes["stack"])
+		gc, cleanup, err := p.Client.GetAuthedGrafanaClient(ctx, p.Organisation, rs.Primary.Attributes["stack"])
 		if err != nil {
 			return err
 		}
@@ -157,7 +160,7 @@ func testAccCheckGrafanaAPIKeyExists(resourceName string) resource.TestCheckFunc
 			defer cleanup()
 		}
 
-		res, err := gc.ListAPIKeys(true)
+		res, err := gc.ListAPIKeys(ctx, true)
 		if err != nil {
 			return err
 		}
@@ -177,6 +180,7 @@ func testAccCheckGrafanaAPIKeyExists(resourceName string) resource.TestCheckFunc
 }
 
 func testAccCheckGrafanaAPIKeyDestroy(s *terraform.State) error {
+	ctx := context.Background()
 	p := getProvider(testAccProvider)
 
 	for name, rs := range s.RootModule().Resources {
@@ -184,7 +188,7 @@ func testAccCheckGrafanaAPIKeyDestroy(s *terraform.State) error {
 			continue
 		}
 
-		res, err := p.Client.ListAPIKeys(p.Organisation)
+		res, err := p.Client.ListAPIKeys(ctx, p.Organisation)
 		if err != nil {
 			return err
 		}

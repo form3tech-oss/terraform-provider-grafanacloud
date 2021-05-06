@@ -37,7 +37,7 @@ func dataSourceStacksRead(ctx context.Context, d *schema.ResourceData, m interfa
 	var diags diag.Diagnostics
 	p := m.(*Provider)
 
-	stacks, err := listStacks(p)
+	stacks, err := listStacks(ctx, p)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -70,15 +70,15 @@ func stackListToSchema(stackList *portal.ListStacksOutput) []map[string]interfac
 	return result
 }
 
-func listStacks(p *Provider) (*portal.ListStacksOutput, error) {
-	resp, err := p.Client.ListStacks(p.Organisation)
+func listStacks(ctx context.Context, p *Provider) (*portal.ListStacksOutput, error) {
+	resp, err := p.Client.ListStacks(ctx, p.Organisation)
 	if err != nil {
 		return nil, err
 	}
 
 	newItems := make([]*portal.Stack, 0)
 	for _, stack := range resp.Items {
-		alertmanager, err := findAlertmanagerDatasource(p, stack)
+		alertmanager, err := findAlertmanagerDatasource(ctx, p, stack)
 		if err != nil {
 			log.Printf("[WARN] couldn't infer Alertmanager URL from Grafana instance: %v", err)
 		}
@@ -94,8 +94,8 @@ func listStacks(p *Provider) (*portal.ListStacksOutput, error) {
 	return resp, nil
 }
 
-func findAlertmanagerDatasource(p *Provider, stack *portal.Stack) (*portal.Datasource, error) {
-	ds, err := p.Client.ListDatasources(stack.Slug)
+func findAlertmanagerDatasource(ctx context.Context, p *Provider, stack *portal.Stack) (*portal.Datasource, error) {
+	ds, err := p.Client.ListDatasources(ctx, stack.Slug)
 	if err != nil {
 		return nil, fmt.Errorf("error while locating Alertmanager instance for stack %s: %v", stack.Slug, err)
 	}

@@ -88,7 +88,7 @@ func resourceApiKeyCreate(ctx context.Context, d *schema.ResourceData, m interfa
 		SecondsToLive: d.Get("seconds_to_live").(int),
 	}
 
-	resp, err := p.Client.CreateGrafanaAPIKey(req)
+	resp, err := p.Client.CreateGrafanaAPIKey(ctx, req)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -104,7 +104,7 @@ func resourceApiKeyRead(ctx context.Context, d *schema.ResourceData, m interface
 	p := m.(*Provider)
 
 	stack := d.Get("stack").(string)
-	client, cleanup, err := p.Client.GetAuthedGrafanaClient(p.Organisation, stack)
+	client, cleanup, err := p.Client.GetAuthedGrafanaClient(ctx, p.Organisation, stack)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -118,7 +118,7 @@ func resourceApiKeyRead(ctx context.Context, d *schema.ResourceData, m interface
 		return diag.FromErr(err)
 	}
 
-	apiKeys, err := client.ListAPIKeys(true)
+	apiKeys, err := client.ListAPIKeys(ctx, true)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -158,7 +158,7 @@ func resourceApiKeyDelete(ctx context.Context, d *schema.ResourceData, m interfa
 	p := m.(*Provider)
 
 	stack := d.Get("stack").(string)
-	client, cleanup, err := p.Client.GetAuthedGrafanaClient(p.Organisation, stack)
+	client, cleanup, err := p.Client.GetAuthedGrafanaClient(ctx, p.Organisation, stack)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -172,7 +172,7 @@ func resourceApiKeyDelete(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
-	err = client.DeleteAPIKey(id)
+	err = client.DeleteAPIKey(ctx, id)
 	if err != nil {
 		return diag.FromErr(err)
 	}

@@ -1,6 +1,7 @@
 package grafana
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"time"
@@ -21,13 +22,14 @@ type APIKey struct {
 	Role       string
 }
 
-func (c *Client) ListAPIKeys(includeExpired bool) (*ListAPIKeysOutput, error) {
+func (c *Client) ListAPIKeys(ctx context.Context, includeExpired bool) (*ListAPIKeysOutput, error) {
 	var apiKeys []*APIKey
 	url := "api/auth/keys"
 
 	resp, err := c.client.R().
 		SetResult(&apiKeys).
 		SetQueryParam("includeExpired", strconv.FormatBool(includeExpired)).
+		SetContext(ctx).
 		Get(url)
 
 	if err := util.HandleError(err, resp, "failed to list Grafana API keys"); err != nil {
@@ -39,10 +41,11 @@ func (c *Client) ListAPIKeys(includeExpired bool) (*ListAPIKeysOutput, error) {
 	}, nil
 }
 
-func (c *Client) DeleteAPIKey(id int) error {
+func (c *Client) DeleteAPIKey(ctx context.Context, id int) error {
 	url := fmt.Sprintf("api/auth/keys/%d", id)
 
 	resp, err := c.client.R().
+		SetContext(ctx).
 		Delete(url)
 
 	if err := util.HandleError(err, resp, "failed to delete Grafana API key"); err != nil {

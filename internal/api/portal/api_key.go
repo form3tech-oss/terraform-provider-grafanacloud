@@ -1,6 +1,7 @@
 package portal
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/naag/terraform-provider-grafanacloud/internal/api/grafana"
@@ -40,11 +41,12 @@ type APIKey struct {
 // Plese note that this is a beta feature and might change in the future.
 //
 // See https://grafana.com/docs/grafana-cloud/api/#create-grafana-api-keys for more information.
-func (c *Client) CreateGrafanaAPIKey(r *CreateGrafanaAPIKeyInput) (*CreateGrafanaAPIKeyOutput, error) {
+func (c *Client) CreateGrafanaAPIKey(ctx context.Context, r *CreateGrafanaAPIKeyInput) (*CreateGrafanaAPIKeyOutput, error) {
 	url := fmt.Sprintf("instances/%s/api/auth/keys", r.Stack)
 	resp, err := c.client.R().
 		SetBody(r).
 		SetResult(&CreateGrafanaAPIKeyOutput{}).
+		SetContext(ctx).
 		Post(url)
 
 	if err := util.HandleError(err, resp, "Failed to create Grafana API key through Grafana Cloud proxy route"); err != nil {
@@ -54,11 +56,12 @@ func (c *Client) CreateGrafanaAPIKey(r *CreateGrafanaAPIKeyInput) (*CreateGrafan
 	return resp.Result().(*CreateGrafanaAPIKeyOutput), nil
 }
 
-func (c *Client) CreateAPIKey(r *CreateAPIKeyInput) (*APIKey, error) {
+func (c *Client) CreateAPIKey(ctx context.Context, r *CreateAPIKeyInput) (*APIKey, error) {
 	url := fmt.Sprintf("orgs/%s/api-keys", r.Organisation)
 	resp, err := c.client.R().
 		SetBody(r).
 		SetResult(&APIKey{}).
+		SetContext(ctx).
 		Post(url)
 
 	if err := util.HandleError(err, resp, "failed to create Grafana Cloud Portal API key"); err != nil {
@@ -68,10 +71,11 @@ func (c *Client) CreateAPIKey(r *CreateAPIKeyInput) (*APIKey, error) {
 	return resp.Result().(*APIKey), nil
 }
 
-func (c *Client) ListAPIKeys(org string) (*ListAPIKeysOutput, error) {
+func (c *Client) ListAPIKeys(ctx context.Context, org string) (*ListAPIKeysOutput, error) {
 	url := fmt.Sprintf("orgs/%s/api-keys", org)
 	resp, err := c.client.R().
 		SetResult(&ListAPIKeysOutput{}).
+		SetContext(ctx).
 		Get(url)
 
 	if err := util.HandleError(err, resp, "failed to read Grafana Cloud Portal API key"); err != nil {
@@ -81,9 +85,10 @@ func (c *Client) ListAPIKeys(org string) (*ListAPIKeysOutput, error) {
 	return resp.Result().(*ListAPIKeysOutput), nil
 }
 
-func (c *Client) DeleteAPIKey(org string, keyName string) error {
+func (c *Client) DeleteAPIKey(ctx context.Context, org string, keyName string) error {
 	url := fmt.Sprintf("orgs/%s/api-keys/%s", org, keyName)
 	resp, err := c.client.R().
+		SetContext(ctx).
 		Delete(url)
 
 	if err := util.HandleError(err, resp, "failed to delete Grafana Cloud Portal API key"); err != nil {

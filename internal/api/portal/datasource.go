@@ -1,6 +1,7 @@
 package portal
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/naag/terraform-provider-grafanacloud/internal/util"
@@ -20,10 +21,11 @@ type Datasource struct {
 	BasicAuthUser string
 }
 
-func (c *Client) ListDatasources(stack string) (*ListDatasourcesOutput, error) {
+func (c *Client) ListDatasources(ctx context.Context, stack string) (*ListDatasourcesOutput, error) {
 	url := fmt.Sprintf("instances/%s/datasources", stack)
 	resp, err := c.client.R().
 		SetResult(&ListDatasourcesOutput{}).
+		SetContext(ctx).
 		Get(url)
 
 	if err := util.HandleError(err, resp, "failed to list Grafana data sources"); err != nil {

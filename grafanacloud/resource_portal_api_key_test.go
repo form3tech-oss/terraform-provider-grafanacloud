@@ -1,6 +1,7 @@
 package grafanacloud_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -77,6 +78,8 @@ func TestAccPortalApiKey_Basic(t *testing.T) {
 
 func testAccCheckPortalAPIKeyExists(resourceName string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
+		ctx := context.Background()
+
 		rs, ok := s.RootModule().Resources[resourceName]
 		if !ok {
 			return fmt.Errorf("resource `%s` not found", resourceName)
@@ -87,7 +90,7 @@ func testAccCheckPortalAPIKeyExists(resourceName string) resource.TestCheckFunc 
 		}
 
 		p := getProvider(testAccProvider)
-		res, err := p.Client.ListAPIKeys(p.Organisation)
+		res, err := p.Client.ListAPIKeys(ctx, p.Organisation)
 		if err != nil {
 			return err
 		}
@@ -102,6 +105,7 @@ func testAccCheckPortalAPIKeyExists(resourceName string) resource.TestCheckFunc 
 }
 
 func testAccCheckPortalAPIKeyDestroy(s *terraform.State) error {
+	ctx := context.Background()
 	p := getProvider(testAccProvider)
 
 	for name, rs := range s.RootModule().Resources {
@@ -109,7 +113,7 @@ func testAccCheckPortalAPIKeyDestroy(s *terraform.State) error {
 			continue
 		}
 
-		res, err := p.Client.ListAPIKeys(p.Organisation)
+		res, err := p.Client.ListAPIKeys(ctx, p.Organisation)
 		if err != nil {
 			return err
 		}

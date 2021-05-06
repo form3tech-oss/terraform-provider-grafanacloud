@@ -88,7 +88,7 @@ func ConfigureProvider(p *schema.Provider, version string) func(context.Context,
 			return nil, diag.FromErr(err)
 		}
 
-		err = c.AuthTest(org)
+		err = c.AuthTest(ctx, org)
 		if err != nil {
 			return nil, diag.FromErr(err)
 		}

@@ -62,7 +62,7 @@ func resourcePortalApiKeyCreate(ctx context.Context, d *schema.ResourceData, m i
 		Organisation: p.Organisation,
 	}
 
-	resp, err := p.Client.CreateAPIKey(req)
+	resp, err := p.Client.CreateAPIKey(ctx, req)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -77,7 +77,7 @@ func resourcePortalApiKeyRead(ctx context.Context, d *schema.ResourceData, m int
 	var diags diag.Diagnostics
 	p := m.(*Provider)
 
-	resp, err := p.Client.ListAPIKeys(p.Organisation)
+	resp, err := p.Client.ListAPIKeys(ctx, p.Organisation)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -103,7 +103,7 @@ func resourcePortalApiKeyDelete(ctx context.Context, d *schema.ResourceData, m i
 	var diags diag.Diagnostics
 	p := m.(*Provider)
 
-	err := p.Client.DeleteAPIKey(p.Organisation, d.Id())
+	err := p.Client.DeleteAPIKey(ctx, p.Organisation, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
 	}
