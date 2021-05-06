@@ -31,7 +31,7 @@ resource "grafanacloud_grafana_api_key" "api_client" {
 
 ### Optional
 
-- **is_expired** (Boolean) Whether or not the API key is expired. This field is used internally in order to recreate expired API keys. Set this to `true` to not recreate expired API keys.
+- **is_expired** (Boolean) Whether or not the API key has expired. This field is used internally in order to recreate expired API keys. Set this to `true` to not recreate expired API keys.
 - **seconds_to_live** (Number) Time in seconds after which the API key automatically expires
 
 ### Read-Only

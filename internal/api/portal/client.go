@@ -11,11 +11,23 @@ import (
 )
 
 const (
-	grafanaStarting = "Your instance is starting"
+	grafanaStarting       = "Your instance is starting"
+	TempKeyDefaultExpires = 60
+	TempKeyDefaultPrefix  = "terraform-provider-grafanacloud-tmp"
 )
 
 type Client struct {
 	client *resty.Client
+
+	// This client can generate temporary Grafana API admin tokens for the purpose
+	// of reading resources from the Grafana API. Define a time after which these
+	// tokens automatically expire. Note that we'll also try to delete them automatically
+	// after use, but if that fails, this serves as a fallback mechanism to invalidate them.
+	TempKeyExpires time.Duration
+
+	// Temporarily created Grafana API admin tokens have a prefix so you can identify them
+	// easily, which defaults to the value of constant constant `TempKeyPrefix`.
+	TempKeyPrefix string
 }
 
 type ClientOpt func(*Client)
@@ -38,7 +50,8 @@ func NewClient(baseURL, apiKey string, opts ...ClientOpt) (*Client, error) {
 		AddRetryHook(logRetry)
 
 	c := &Client{
-		client: resty,
+		client:         resty,
+		TempKeyExpires: TempKeyDefaultExpires * time.Second,
 	}
 
 	for _, opt := range opts {
@@ -51,6 +64,18 @@ func NewClient(baseURL, apiKey string, opts ...ClientOpt) (*Client, error) {
 func WithUserAgent(userAgent string) ClientOpt {
 	return func(c *Client) {
 		c.client.SetHeader("User-Agent", userAgent)
+	}
+}
+
+func WithTempKeyExpires(d time.Duration) ClientOpt {
+	return func(c *Client) {
+		c.TempKeyExpires = d
+	}
+}
+
+func WithTempKeyPrefix(prefix string) ClientOpt {
+	return func(c *Client) {
+		c.TempKeyPrefix = prefix
 	}
 }
 

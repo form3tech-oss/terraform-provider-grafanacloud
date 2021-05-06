@@ -37,4 +37,6 @@ provider "grafanacloud" {
 
 - **api_key** (String, Sensitive) API key used to authenticate with the API. Must have `Admin` role if API keys need to be managed. Might also be provided via `GRAFANA_CLOUD_API_KEY`.
 - **organisation** (String) Organisation which the API key belongs to (as slug name). Might also be provided via `GRAFANA_CLOUD_ORGANISATION`
+- **temp_key_expires** (Number) Time after which temporary Grafana API admin tokens used to read Grafana API resources expire. Might also be provided via `GRAFANA_CLOUD_TEMP_KEY_EXPIRES`
+- **temp_key_prefix** (String) Prefix for temporary Grafana API admin tokens used to read Grafana API resources. Might also be provided via `GRAFANA_CLOUD_TEMP_KEY_PREFIX`
 - **url** (String) Grafana Cloud API endpoint including the final `/api`. Might also be provided via `GRAFANA_CLOUD_URL`.

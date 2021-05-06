@@ -21,11 +21,11 @@ func (c *Client) GetAuthedGrafanaClient(orgName, stackName string) (*grafana.Cli
 		return nil, nil, fmt.Errorf("failed to find stack by name %s", stackName)
 	}
 
-	name := fmt.Sprintf("terraform-provider-grafanacloud-tmp-%d", time.Now().UnixNano())
+	name := fmt.Sprintf("%s-%d", c.TempKeyPrefix, time.Now().UnixNano())
 	req := &CreateGrafanaAPIKeyInput{
 		Name:          name,
 		Role:          "Admin",
-		SecondsToLive: 60,
+		SecondsToLive: int(c.TempKeyExpires.Seconds()),
 		Stack:         stackName,
 	}
 
