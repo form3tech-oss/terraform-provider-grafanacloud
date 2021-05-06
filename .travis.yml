@@ -1,15 +1,18 @@
 language: go
+os: linux
+dist: focal
 go:
 - 1.16.x
+env:
+  global:
+    secure: "fefqe9CJmuwVbP5xMBLCc3G01l5yFQg966Y5fGdDJO6HLd+m7jOmpOn1HfQibMH9CkyDjz25kKS7il3Qz+NZtvfPl3JBnniJf7KYdUCBWqCOGfvXXeKEED48HIagqGL2OJZ7Y/QmjBfOvI58unsp3k0WORlPMQUb6rkrWWuXr+78Hpy9FK7jZbBSOM73qofxMxwWq9/WDg2UC3n0H6WEs5Km63k0T/EYFeLHrfo+2tMRWSWprO2h2+Jhf4PKbcSinSurf0qMt6+Yo/yGfdjWDyupfWbhM8TAVYgPWziVBUzhVoLmUqj2JP50uveDMwntCIbmIqfQaOM8zKz6k65D+xsS616hSbQafnkVoueSLpHXHeNx4scYihwQvcgP5oTXY0rHDuRN2G+k4mCFPF5Kq6nTj5lAuo4taVwxHLk4ifrZst5AKQ75y3jx/9MW+HEJ/V8pajTBNBbQYKqRrLtsMAJTwcOdJ9v/3V+7kUif6UhCR4Jw+6UwiXFO7MGG76mj0RP9oxe/6MHHezSi4L1FDkNqFUmXtmUhNrpVT1Y+bsAgKbiqbhuz/UMOFCBwqmvEAJUz6yEn8QLNDDBf5mZaNQkbb5sZSrPsCkWaXoE2YUTzUi20Vy6kKoLNIttRJwCBq7/Ev0whsxlSIJ6VwjtE4ZUULzgbTN0O3IJoGDOjxXQ="
 script:
 - make testacc
 deploy:
 - provider: script
   skip_cleanup: true
   script:
+  - env | sort
   - make release
   on:
     tags: true
-env:
-  global:
-    secure: sWseOcPS8ErsZGTSVpo1C2PNv/nJoiEH1CXi3MqVgt+zJKcibHeKbv8i3Ux9A8US+j5YoWyxTwK1TJQJjzL9oXGYc/0hhteC5/QmxI3/YENnar3D3oco8jFtTSaDshKdKlNB4QiC9cMPMglGAOvhjGdKhbNu1chJzBrYkKmntKf5M0Iokeu1b7G36BpOVGUAHPgR77BdJ7GZwCL7O2llsswHPqi7iHL+dL2yoq459SoUNJBv3t0CiV1GGwY4dCMNpUpPB3i/njEku9m8BZAyhZRFhJ+N9Z1XzrmTVgT9/1hIdR2VzPJj9XT+ytli88hXPqMy86P+MmrSjFtX8o2uLoO3w0EgR4MD00QGVQ1tJbFco75KxPENpr5FAF6QvuT5rpinCXMtfHjvGVazVyHkEddriaA756xBc86V9kNKTFHt1gsHE5L5VV7gy0AyB+eHLmUz2x516a5ax4WomluiJKRrhs0uXuXsTlOO+cqU5tdbIKx1tlQsvIy8qHVXY5QwKzYo7cToeO501WPJFN7ok0bkSD4e+3aT6CvqgdyF/3/Kf2Kk8IaVsvJJ2G6700cXJ7Q0r16H74jgbKB4XYd2lMac/1eq4KsV6xpygOVUcJ0D1AZbE6MvhzUM8oUGJIhSzPpTCXFbLD1BbKexULTsiYBuOgldPKUIPhQO//8qkgc=
