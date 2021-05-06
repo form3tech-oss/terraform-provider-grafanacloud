@@ -74,3 +74,9 @@ make testacc
 Due to API rate limits, such a test run may not actually pass or might even impact your production API usage, so please be careful about that.
 
 You can obtain debugging output from the `go-resty` HTTP client by setting `HTTP_DEBUG=1` when running tests.
+
+## Releasing the provider
+
+In order to release a new version of the provider to GitHub releases, create and merge a PR to `master`. We currently don't publish to Terraform Registry.
+
+Once that's done, create a new draft release with a tag that follows the [SemVer](https://semver.org/) standard. Travis CI will pick this up, build the binaries for the provider, and convert your pre-release to a final release.

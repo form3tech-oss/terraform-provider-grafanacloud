@@ -12,5 +12,4 @@ deploy:
 - provider: script
   script: make release
   on:
-    branch: master
     tags: true
