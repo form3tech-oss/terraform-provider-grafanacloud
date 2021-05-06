@@ -9,18 +9,15 @@ GRAFANA_CLOUD_API_KEY ?= very-secret
 GRAFANA_CLOUD_ORGANISATION ?= dummy-org
 GRAFANA_CLOUD_STACK ?= dummy-stack
 
-.PHONY: build
 build: testacc
 	mkdir -p bin
 	go build -o bin/$(BINARY) main.go
 
-.PHONY: test
-test: vet
+test: lint
 	GRAFANA_CLOUD_MOCK=$(GRAFANA_CLOUD_MOCK) \
 	go test -count 1 -v ./...
 
-.PHONY: testacc
-testacc: vet
+testacc: lint
 	TF_ACC=1 \
 	GRAFANA_CLOUD_API_KEY=$(GRAFANA_CLOUD_API_KEY) \
 	GRAFANA_CLOUD_ORGANISATION=$(GRAFANA_CLOUD_ORGANISATION) \
@@ -28,16 +25,21 @@ testacc: vet
 	GRAFANA_CLOUD_MOCK=$(GRAFANA_CLOUD_MOCK) \
 	go test -count=1 ./... -v $(TESTARGS) -timeout 120m
 
-.PHONY: vet
+lint: vet tffmtcheck
+
 vet:
 	go vet ./...
 
-.PHONY: install
+tffmtcheck:
+	terraform fmt -check -recursive ./examples/
+
+fmt:
+	terraform fmt -recursive ./examples/
+
 install: test build
 	mkdir -p $(INSTALL_DIR)
 	cp bin/$(BINARY) $(INSTALL_DIR)/
 
-.PHONY: release
 release: bin/goreleaser
 	./bin/goreleaser
 
@@ -47,7 +49,6 @@ bin/goreleaser:
 	tar -C bin -xzf goreleaser*tar.gz goreleaser
 	rm goreleaser*tar.gz*
 
-.PHONY: docs
 docs: bin/tfplugindocs
 	./bin/tfplugindocs generate
 
@@ -61,14 +62,13 @@ bin/tfplugindocs:
 	unzip -d bin tfplugindocs*zip tfplugindocs
 	rm tfplugindocs*zip*
 
-.PHONY: tf-plan
 tf-plan: install
 	cd examples/full && rm -f .terraform.lock.hcl && terraform init && terraform plan
 
-.PHONY: tf-apply
 tf-apply: install
 	cd examples/full && rm -f .terraform.lock.hcl && terraform init && terraform apply
 
-.PHONY: tf-destroy
 tf-destroy: install
 	cd examples/full && rm -f .terraform.lock.hcl && terraform init && terraform destroy
+
+.PHONY: build test testacc lint vet tffmtcheck fmt install release docs tf-plan tf-apply tf-destroy
