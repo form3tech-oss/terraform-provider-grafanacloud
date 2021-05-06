@@ -42,8 +42,9 @@ release: bin/goreleaser
 	./bin/goreleaser --skip-publish --snapshot
 
 bin/goreleaser:
+	mkdir -p bin
 	wget https://github.com/goreleaser/goreleaser/releases/download/v0.164.0/goreleaser_Linux_x86_64.tar.gz
-	tar -C bin/ -xzf goreleaser*tar.gz goreleaser
+	tar -C bin -xzf goreleaser*tar.gz goreleaser
 	rm goreleaser*tar.gz*
 
 .PHONY: docs
@@ -56,7 +57,8 @@ bin/tfplugindocs:
 	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
 		wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.4.0/tfplugindocs_0.4.0_darwin_amd64.zip; \
 	fi
-	unzip -d bin/ tfplugindocs*zip tfplugindocs
+	mkdir -p bin
+	unzip -d bin tfplugindocs*zip tfplugindocs
 	rm tfplugindocs*zip*
 
 .PHONY: tf-plan
