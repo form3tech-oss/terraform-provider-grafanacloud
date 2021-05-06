@@ -39,7 +39,7 @@ install: test build
 
 .PHONY: release
 release: bin/goreleaser
-	./bin/goreleaser --skip-publish --snapshot
+	./bin/goreleaser
 
 bin/goreleaser:
 	mkdir -p bin
