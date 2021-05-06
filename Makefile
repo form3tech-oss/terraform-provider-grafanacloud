@@ -1,6 +1,7 @@
 VERSION := 0.0.1
 INSTALL_DIR := ~/.terraform.d/plugins/github.com/form3tech-oss/grafanacloud/$(VERSION)/linux_amd64
 BINARY := terraform-provider-grafanacloud_v$(VERSION)
+SHELL := /bin/bash
 
 # Default values used by acceptance tests (testacc target)
 GRAFANA_CLOUD_API_KEY ?= very-secret
@@ -33,8 +34,17 @@ install: test build
 	cp bin/$(BINARY) $(INSTALL_DIR)/
 
 .PHONY: docs
-docs:
-	tfplugindocs generate
+docs: bin/tfplugindocs
+	./bin/tfplugindocs generate
+
+bin/tfplugindocs:
+	@if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \
+		wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.4.0/tfplugindocs_0.4.0_linux_amd64.zip; \
+	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
+		wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.4.0/tfplugindocs_0.4.0_darwin_amd64.zip; \
+	fi; \
+	unzip -d bin/ tfplugindocs*zip tfplugindocs; \
+	rm tfplugindocs*zip*
 
 .PHONY: tf-plan
 tf-plan: install
