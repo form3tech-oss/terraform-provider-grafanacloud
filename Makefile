@@ -1,7 +1,10 @@
+include Makefile.deps
+
 VERSION := 0.0.1
 INSTALL_DIR := ~/.terraform.d/plugins/github.com/form3tech-oss/grafanacloud/$(VERSION)/linux_amd64
 BINARY := terraform-provider-grafanacloud_v$(VERSION)
 SHELL := /bin/bash
+PATH := $(PATH):$(PWD)/bin
 
 # Default values used by tests
 GRAFANA_CLOUD_MOCK ?= 1
@@ -30,7 +33,7 @@ lint: vet tflint tffmtcheck
 vet:
 	go vet ./...
 
-tflint: bin/tflint
+tflint:
 	find ./examples/ -type d -exec tflint \{\} \;
 
 tffmtcheck:
@@ -44,37 +47,11 @@ install: test build
 	mkdir -p $(INSTALL_DIR)
 	cp bin/$(BINARY) $(INSTALL_DIR)/
 
-release: bin/goreleaser
-	./bin/goreleaser
+release:
+	goreleaser
 
-docs: bin/tfplugindocs
-	./bin/tfplugindocs generate
-
-bin/goreleaser:
-	mkdir -p bin
-	wget https://github.com/goreleaser/goreleaser/releases/download/v0.164.0/goreleaser_Linux_x86_64.tar.gz
-	tar -C bin -xzf goreleaser*tar.gz goreleaser
-	rm goreleaser*tar.gz*
-
-bin/tfplugindocs:
-	@if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \
-		wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.4.0/tfplugindocs_0.4.0_linux_amd64.zip; \
-	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
-		wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.4.0/tfplugindocs_0.4.0_darwin_amd64.zip; \
-	fi
-	mkdir -p bin
-	unzip -d bin tfplugindocs*zip tfplugindocs
-	rm tfplugindocs*zip*
-
-bin/tflint:
-	@if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \
-		wget https://github.com/terraform-linters/tflint/releases/download/v0.28.1/tflint_linux_amd64.zip; \
-	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
-		wget https://github.com/terraform-linters/tflint/releases/download/v0.28.1/tflint_darwin_amd64.zip; \
-	fi
-	mkdir -p bin
-	unzip -d bin tflint*zip tflint
-	rm tflint*zip*
+docs:
+	tfplugindocs generate
 
 tf-plan: install
 	cd examples/full && rm -f .terraform.lock.hcl && terraform init && terraform plan

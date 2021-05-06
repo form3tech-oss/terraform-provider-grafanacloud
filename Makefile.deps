@@ -1,0 +1,38 @@
+.PHONY: deps
+deps: bin/goreleaser bin/tfplugindocs bin/tflint bin/terraform
+
+bin/goreleaser:
+	mkdir -p bin
+	wget https://github.com/goreleaser/goreleaser/releases/download/v0.164.0/goreleaser_Linux_x86_64.tar.gz
+	tar -C bin -xzf goreleaser*tar.gz goreleaser
+	rm goreleaser*tar.gz*
+
+bin/tfplugindocs:
+	@if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \
+		wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.4.0/tfplugindocs_0.4.0_linux_amd64.zip; \
+	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
+		wget https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.4.0/tfplugindocs_0.4.0_darwin_amd64.zip; \
+	fi
+	mkdir -p bin
+	unzip -d bin tfplugindocs*zip tfplugindocs
+	rm tfplugindocs*zip*
+
+bin/tflint:
+	@if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \
+		wget https://github.com/terraform-linters/tflint/releases/download/v0.28.1/tflint_linux_amd64.zip; \
+	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
+		wget https://github.com/terraform-linters/tflint/releases/download/v0.28.1/tflint_darwin_amd64.zip; \
+	fi
+	mkdir -p bin
+	unzip -d bin tflint*zip tflint
+	rm tflint*zip*
+
+bin/terraform:
+	@if [[ "$$OSTYPE" == "linux-gnu"* ]]; then \
+		wget https://releases.hashicorp.com/terraform/0.15.2/terraform_0.15.2_linux_amd64.zip; \
+	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
+		wget https://releases.hashicorp.com/terraform/0.15.2/terraform_0.15.2_darwin_amd64.zip; \
+	fi
+	mkdir -p bin
+	unzip -d bin terraform*zip terraform
+	rm terraform*zip*
