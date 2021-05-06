@@ -1,0 +1,12 @@
+language: go
+go:
+- 1.16.x
+script:
+- make testacc
+deploy:
+- provider: script
+  skip_cleanup: true
+  script:
+    - make release
+  on:
+    tags: true
