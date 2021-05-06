@@ -10,7 +10,6 @@ script:
 - make testacc
 deploy:
 - provider: script
-  skip_cleanup: true
   script: make release
   on:
     tags: true
