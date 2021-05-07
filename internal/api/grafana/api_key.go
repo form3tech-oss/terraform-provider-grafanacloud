@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/naag/terraform-provider-grafanacloud/internal/util"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/util"
 	"github.com/relvacode/iso8601"
 )
 

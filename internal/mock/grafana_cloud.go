@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/naag/terraform-provider-grafanacloud/internal/api/grafana"
-	"github.com/naag/terraform-provider-grafanacloud/internal/api/portal"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/api/grafana"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/api/portal"
 )
 
 func (g *GrafanaCloud) createPortalAPIKey(w http.ResponseWriter, r *http.Request) {

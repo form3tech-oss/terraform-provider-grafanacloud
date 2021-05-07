@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/naag/terraform-provider-grafanacloud/internal/api/grafana"
-	"github.com/naag/terraform-provider-grafanacloud/internal/util"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/api/grafana"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/util"
 )
 
 type CreateAPIKeyInput struct {

@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/naag/terraform-provider-grafanacloud/internal/api/grafana"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/api/grafana"
 )
 
 // The Grafana Cloud API is disconnected from the Grafana API on the stacks unfortunately. That's why we can't use

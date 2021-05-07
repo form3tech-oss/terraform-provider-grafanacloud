@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/naag/terraform-provider-grafanacloud/grafanacloud"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/grafanacloud"
 	"github.com/stretchr/testify/require"
 )
 

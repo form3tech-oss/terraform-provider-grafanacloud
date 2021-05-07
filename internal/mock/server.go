@@ -9,8 +9,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/naag/terraform-provider-grafanacloud/internal/api/grafana"
-	"github.com/naag/terraform-provider-grafanacloud/internal/api/portal"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/api/grafana"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/api/portal"
 )
 
 type GrafanaCloud struct {

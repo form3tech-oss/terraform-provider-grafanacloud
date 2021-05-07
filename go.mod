@@ -1,4 +1,4 @@
-module github.com/naag/terraform-provider-grafanacloud
+module github.com/form3tech-oss/terraform-provider-grafanacloud
 
 go 1.16
 

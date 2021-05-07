@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-	"github.com/naag/terraform-provider-grafanacloud/grafanacloud"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/grafanacloud"
 )
 
 var (

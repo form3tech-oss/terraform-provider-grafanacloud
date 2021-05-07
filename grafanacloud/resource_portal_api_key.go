@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"github.com/naag/terraform-provider-grafanacloud/internal/api/portal"
+	"github.com/form3tech-oss/terraform-provider-grafanacloud/internal/api/portal"
 )
 
 var (
