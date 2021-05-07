@@ -1,0 +1,9 @@
+/bin
+/dist
+/tags*
+/.vscode
+/.idea
+
+.terraform.lock.hcl
+terraform.tfstate*
+.terraform
