@@ -27,4 +27,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test and Build
-        run: cd ../..; make deps testacc lint
+        run: make deps testacc lint
+        working-directory: .
