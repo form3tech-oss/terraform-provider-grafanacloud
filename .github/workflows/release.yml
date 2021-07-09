@@ -1,0 +1,14 @@
+name: terraform-provider-grafanacloud
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  build:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run make deps release
+        run: make deps release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
