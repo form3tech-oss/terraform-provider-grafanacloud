@@ -25,7 +25,6 @@ jobs:
     name: test
     needs: build
     runs-on: ubuntu-latest
-  defaults:
     steps:
       - name: Test and Build
         run: cd ../..; make deps testacc lint
