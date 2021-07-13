@@ -6,7 +6,7 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
+    if: contains(github.event.pull_request.labels.*.name, 'good first issue')
     steps:
       - name: Setup Go 1.16
         uses: actions/setup-go@v2
