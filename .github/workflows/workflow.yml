@@ -10,7 +10,7 @@ jobs:
       - name: debug
         run: |
           echo "why wtf"
-          echo "${{ github.event.pull_request.labels.*.name }}"
+          echo "${{ toJson(github.event.pull_request.labels.*.name) }}"
 
   build:
     name: build
