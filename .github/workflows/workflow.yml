@@ -15,7 +15,7 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'bug')
+#    if: contains(github.event.pull_request.labels.*.name, 'bug')
     steps:
       - name: Setup Go 1.16
         uses: actions/setup-go@v2
