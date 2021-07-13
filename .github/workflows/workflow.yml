@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: debug
         run: |
-          echo "${{ toJson(github.event.pull_request.labels) }}"
-          echo "${{ toJson(github.event.pull_request.labels.*.name) }}"
+          echo "${{ toJson(github.event.pull_request) }}"
+
   build:
     name: build
     runs-on: ubuntu-latest
