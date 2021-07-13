@@ -1,6 +1,7 @@
 name: terraform-provider-grafanacloud
 on:
   pull_request_target:
+    branches: [ master ]
 jobs:
   approve:
     runs-on: ubuntu-latest
