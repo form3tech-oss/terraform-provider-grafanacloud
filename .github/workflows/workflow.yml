@@ -3,6 +3,14 @@ on:
   [push, pull_request_target]
 
 jobs:
+  label:
+    name: Run only when the labels do not include "dependencies"
+    runs-on: ubuntu-latest
+    steps:
+      - name: debug
+        run: |
+          echo "${{ toJson(github.event.pull_request.labels) }}"
+          echo "${{ toJson(github.event.pull_request.labels.*.names) }}"
   build:
     name: build
     runs-on: ubuntu-latest
