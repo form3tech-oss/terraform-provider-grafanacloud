@@ -3,9 +3,6 @@ os: linux
 dist: focal
 go:
 - 1.16.x
-env:
-  global:
-    secure: "fefqe9CJmuwVbP5xMBLCc3G01l5yFQg966Y5fGdDJO6HLd+m7jOmpOn1HfQibMH9CkyDjz25kKS7il3Qz+NZtvfPl3JBnniJf7KYdUCBWqCOGfvXXeKEED48HIagqGL2OJZ7Y/QmjBfOvI58unsp3k0WORlPMQUb6rkrWWuXr+78Hpy9FK7jZbBSOM73qofxMxwWq9/WDg2UC3n0H6WEs5Km63k0T/EYFeLHrfo+2tMRWSWprO2h2+Jhf4PKbcSinSurf0qMt6+Yo/yGfdjWDyupfWbhM8TAVYgPWziVBUzhVoLmUqj2JP50uveDMwntCIbmIqfQaOM8zKz6k65D+xsS616hSbQafnkVoueSLpHXHeNx4scYihwQvcgP5oTXY0rHDuRN2G+k4mCFPF5Kq6nTj5lAuo4taVwxHLk4ifrZst5AKQ75y3jx/9MW+HEJ/V8pajTBNBbQYKqRrLtsMAJTwcOdJ9v/3V+7kUif6UhCR4Jw+6UwiXFO7MGG76mj0RP9oxe/6MHHezSi4L1FDkNqFUmXtmUhNrpVT1Y+bsAgKbiqbhuz/UMOFCBwqmvEAJUz6yEn8QLNDDBf5mZaNQkbb5sZSrPsCkWaXoE2YUTzUi20Vy6kKoLNIttRJwCBq7/Ev0whsxlSIJ6VwjtE4ZUULzgbTN0O3IJoGDOjxXQ="
 script:
 - make deps testacc lint
 deploy:
